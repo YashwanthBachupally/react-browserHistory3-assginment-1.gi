@@ -3,28 +3,45 @@ import HistoryItem from '../HistoryItem'
 import './index.css'
 
 class HistoryCard extends Component {
-  state = {searchInput: ''}
+  state = {searchInput: '', filteredListItems: []}
 
   searching = event => {
     this.setState({searchInput: event.target.value})
   }
 
-  render() {
+  deleteHistory = id => {
     const {initialHistory} = this.props
-    const {searchInput} = this.state
-    // const {timeAccessed, logoUrl, title, domainUrl} = historyItem
-    // const {searchInput} = this.state
+    const DelfilteredList = initialHistory.filter(each => id !== each.id)
+    this.setState({filteredListItems: DelfilteredList})
+  }
 
-    const filteredList = initialHistory.filter(each =>
+  filteredList = () => {
+    const {initialHistory} = this.props
+    const {searchInput, filteredListItems} = this.state
+    const f = initialHistory.filter(each =>
       each.title.toLowerCase().includes(searchInput.toLowerCase()),
     )
+    this.setState({filteredListItems: f})
+  }
+  /// /----->> this.setState({filteredListItems: initialHistory})
 
-    let DelfilteredList = filteredList
+  // updateList = ary => {
+  //  this.setState({filteredListItems: ary})
+  // }
 
-    const deleteHistory = id => {
-      DelfilteredList = filteredList.filter(each => id !== each.id)
-      return DelfilteredList
-    }
+  render() {
+    const {initialHistory} = this.props
+    const {searchInput, filteredListItems} = this.state
+
+    // const {searchInput} = this.state
+    // this.updateList(initialHistory)
+    // -------->> this.setState({filteredListItems: initialHistory})
+
+    // let DelfilteredList = filteredList
+    // this.filteredList()
+    const fl = initialHistory.filter(each =>
+      each.title.toLowerCase().includes(searchInput.toLowerCase()),
+    )
 
     return (
       <div className="app-cont">
@@ -53,11 +70,11 @@ class HistoryCard extends Component {
         <div className="below-navbar">
           <div className="history-cont">
             <ul className="history-list">
-              {DelfilteredList.map(each => (
+              {fl.map(each => (
                 <HistoryItem
                   key={each.id}
                   historyItem={each}
-                  onDeleteHis={deleteHistory}
+                  onDeleteHis={this.deleteHistory}
                 />
               ))}
             </ul>

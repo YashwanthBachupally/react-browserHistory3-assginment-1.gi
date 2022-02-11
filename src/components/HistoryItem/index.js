@@ -20,7 +20,7 @@ const HistoryItem = props => {
           <p className="site-name">{title}</p>
           <p className="domainUrl">{domainUrl}</p>
         </div>
-        <button type="button" onClick={DeleteThis}>
+        <button type="button" onClick={DeleteThis} testid="delete">
           <img
             className="delete-icon"
             alt="delete"
